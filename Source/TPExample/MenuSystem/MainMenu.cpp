@@ -87,6 +87,7 @@ void UMainMenu::SetServerList(TArray<FString> ServerNames)
 void UMainMenu::SetSelectedIndex(uint32 Index)
 {
 	SelectedRowIndex = Index;
+	UpdateChildren();
 }
 
 void UMainMenu::JoinServer()
@@ -109,4 +110,29 @@ void UMainMenu::QuitGame()
 {
 	if (MenuInterface != NULL)
 		MenuInterface->QuitGameInstance();
+}
+
+void UMainMenu::UpdateChildren()
+{
+	if (!ensure(ServerList != NULL)) return;
+	if (!SelectedRowIndex.IsSet()) return;
+
+	int32 ChildrenCount = ServerList->GetChildrenCount();
+	int32 Index;
+
+	// Set flag for selected not not
+	for (Index = 0; Index < ChildrenCount; Index++)
+	{
+		auto Row = Cast<UServerRow>(ServerList->GetChildAt(Index));
+		if (!Row == NULL)
+			Row->bIsSelected = (SelectedRowIndex.IsSet() && SelectedRowIndex.GetValue() == Index);
+	}
+
+	// Set colors for those unselected to white
+	for (Index = 0; Index < ChildrenCount; Index++)
+	{
+		auto Row = Cast<UServerRow>(ServerList->GetChildAt(Index));
+		if (!Row->bIsSelected)
+			Row->SetColor(FLinearColor(1.0f, 1.0f, 1.0f, 1.0f));
+	}
 }

@@ -66,4 +66,6 @@ private:
 
 	TSubclassOf<class UUserWidget> ServerRowClass;
 	TOptional<uint32> SelectedRowIndex;
+
+	void UpdateChildren();
 };

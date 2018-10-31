@@ -18,8 +18,10 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* ServerName;
 
+	bool bIsSelected;
 	void Setup(class UMainMenu* Parent, uint32 Index);
-
+	void SetColor(FLinearColor InColorAndOpacity);
+	
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* ServerRowButton;
@@ -29,6 +31,12 @@ private:
 
 	UFUNCTION()
 	void OnClicked();
+
+	UFUNCTION()
+	void OnHovered();
+
+	UFUNCTION()
+	void OnUnHoverd();
 	
 	uint32 Index;
 };
